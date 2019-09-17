@@ -5,10 +5,16 @@
       v-ripple
       v-for="item in list"
       :key="item.id"
-      style="border-bottom:1px solid #eee"
-      @click="goRadio(item.id)"
+      class="flex"
+      style="border-bottom:1px solid #eee;align-items:center;"
+      @click="goPlay(item, item.id)"
     >
-      <q-item-section>{{item.name}}</q-item-section>
+      <q-item-section>{{ item.name }}</q-item-section>
+      <q-icon
+        style="margin-right:10px;"
+        name="album"
+        @click.stop="addToList(item)"
+      />
     </q-item>
   </q-list>
 </template>
@@ -25,15 +31,23 @@ export default {
       .get(`/dj/program?rid=${this.$route.params.id}&&limit=${this.limit}`)
       .then(response => {
         this.list = response.data.programs;
-        console.log(response)
+        this.$store.commit(
+          "example/modifyTitle",
+          response.data.programs[0].dj.brand
+        );
+        console.log(response);
       })
       .catch(err => {
         console.log(err);
       });
   },
-  methods:{
-    goRadio(id){
-      console.log(id)
+  methods: {
+    goPlay(song, id) {
+      this.$store.commit("example/addSong", song);
+      this.$router.push(`/player/${id}?type=program`);
+    },
+    addToList(song) {
+      this.$store.commit("example/addSong", song);
     }
   }
 };

@@ -1,3 +1,5 @@
 export default {
-  isLogin: false
+  isLogin: false,
+  title: "",
+  playlist: []
 };

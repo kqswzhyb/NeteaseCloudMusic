@@ -6,12 +6,30 @@ const routes = [
   {
     path: "/login",
     component: () => import("layouts/MyLayout.vue"),
-    children: [{ path: "", component: () => import("pages/Login.vue") }]
+    children: [
+      {
+        path: "",
+        component: () => import("pages/Login.vue"),
+        meta: {
+          title: "登录",
+          back:true
+        }
+      }
+    ]
   },
   {
     path: "/radio",
     component: () => import("layouts/MyLayout.vue"),
-    children: [{ path: "", component: () => import("pages/Radio.vue") }]
+    children: [
+      {
+        path: "",
+        component: () => import("pages/Radio.vue"),
+        meta: {
+          title: "热门电台",
+          back:true
+        }
+      }
+    ]
   },
   {
     path: "/radio/:id",
@@ -26,7 +44,14 @@ const routes = [
   {
     path: "/songlistdetail/:id",
     component: () => import("layouts/MyLayout.vue"),
-    children: [{ path: "", component: () => import("pages/SongListDetail.vue") }]
+    children: [
+      { path: "", component: () => import("pages/SongListDetail.vue") }
+    ]
+  },
+  {
+    path: "/player/:id",
+    component: () => import("layouts/MyLayout.vue"),
+    children: [{ path: "", component: () => import("pages/Player.vue") }]
   }
 ];
 

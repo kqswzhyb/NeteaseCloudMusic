@@ -2,17 +2,31 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn flat dense round @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu">
+        <q-btn
+          flat
+          dense
+          round
+          v-if="$route.meta.back"
+          @click="leftDrawerOpen = !leftDrawerOpen"
+          aria-label="Menu"
+        >
           <q-icon name="menu" />
         </q-btn>
+        <q-btn flat dense round @click="goBack" v-else aria-label="Menu">
+          <q-icon name="arrow_left" size="30px" />
+        </q-btn>
 
-        <q-toolbar-title>Quasar App</q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
+        <q-toolbar-title>{{ this.$route.meta.title || title }}</q-toolbar-title>
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered content-class="bg-grey-2">
+    <q-drawer
+      v-model="leftDrawerOpen"
+      show-if-above
+      bordered
+      v-if="$route.meta.back"
+      content-class="bg-grey-2"
+    >
       <q-item>
         <q-item-section avatar>
           <img style="width:60px;border-radius:50%;" :src="user.avatarUrl" />
@@ -20,12 +34,14 @@
 
         <q-item-section>
           <q-item-label>
-            {{
-            user.userId ? user.nickname : "未登录"
-            }}
+            {{ user.userId ? user.nickname : "未登录" }}
           </q-item-label>
         </q-item-section>
-        <q-btn color="primary" :label="isLogin ? '退出' : '去登录'" @click="control" />
+        <q-btn
+          color="primary"
+          :label="isLogin ? '退出' : '去登录'"
+          @click="control"
+        />
       </q-item>
       <q-item clickable @click="goRadio" style="border-bottom:1px solid #eee;">
         <q-item-section avatar>
@@ -82,22 +98,34 @@ export default {
       } else {
         this.$router.push({ path: "/login" });
       }
+      this.leftDrawerOpen = false;
     },
     goRadio() {
       this.$router.push({ path: "/radio" });
+      this.leftDrawerOpen = false;
     },
     songList(id) {
       this.$router.push(`/songlist/${id}`);
+      this.leftDrawerOpen = false;
+    },
+    goBack() {
+      this.$router.go(-1);
+      this.leftDrawerOpen = false;
     }
   },
   computed: {
     ...mapState({
       isLogin: state => state.example.isLogin
+    }),
+    ...mapState({
+      title: state => state.example.title
     })
   },
   watch: {
-    "$store.state.example.isLogin": function() {
-      this.user = JSON.parse(this.$q.localStorage.getItem("user"));
+    "$store.state.example.isLogin": function(val) {
+      if (val) {
+        this.user = JSON.parse(this.$q.localStorage.getItem("user"));
+      }
     }
   },
   created() {
