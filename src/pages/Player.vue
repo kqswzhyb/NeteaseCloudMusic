@@ -84,7 +84,7 @@ export default {
         item => item.id === Number(this.ids)
       );
       if (index !== 0) {
-        this.ids = this.$store.state.example.playlist[index -1].id;
+        this.ids = this.$store.state.example.playlist[index - 1].id;
       }
     },
     async handleProgram(ids) {

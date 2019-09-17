@@ -19,8 +19,8 @@ export default {
   name: "PageIndex",
   data() {
     return {
-      phone: "13961532693",
-      password: "q465604612"
+      phone: "",
+      password: ""
     };
   },
   created() {},
