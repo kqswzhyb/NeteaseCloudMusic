@@ -115,9 +115,7 @@ export default {
   },
   computed: {
     ...mapState({
-      isLogin: state => state.example.isLogin
-    }),
-    ...mapState({
+      isLogin: state => state.example.isLogin,
       title: state => state.example.title
     })
   },

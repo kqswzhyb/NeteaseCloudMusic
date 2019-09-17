@@ -38,9 +38,9 @@
         @click="changeSong(item.id)"
       >
         <q-item-section>
-          <span :style="{ color: item.id === ids ? '#e66457' : '#000' }">{{
-            item.name
-          }}</span>
+          <span :style="{ color: item.id === ids ? '#e66457' : '#000' }">
+            {{ item.name }}
+          </span>
         </q-item-section>
       </q-item>
     </q-list>
@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -70,21 +71,22 @@ export default {
       this.handleSong(this.$route.params.id);
     }
   },
+  computed: {
+    ...mapState({
+      playlist: state => state.example.playlist
+    })
+  },
   methods: {
     next() {
-      let index = this.$store.state.example.playlist.findIndex(
-        item => item.id === Number(this.ids)
-      );
-      if (index < this.$store.state.example.playlist.length - 1) {
-        this.ids = this.$store.state.example.playlist[index + 1].id;
+      let index = this.playlist.findIndex(item => item.id === Number(this.ids));
+      if (index < this.playlist.length - 1) {
+        this.ids = this.playlist[index + 1].id;
       }
     },
     previous() {
-      let index = this.$store.state.example.playlist.findIndex(
-        item => item.id === Number(this.ids)
-      );
+      let index = this.playlist.findIndex(item => item.id === Number(this.ids));
       if (index !== 0) {
-        this.ids = this.$store.state.example.playlist[index - 1].id;
+        this.ids = this.playlist[index - 1].id;
       }
     },
     async handleProgram(ids) {
